@@ -3,7 +3,7 @@ import { FaWhatsapp } from 'react-icons/fa'
 
 const WhatsAppButton = () => {
   // Número de WhatsApp correto da empresa
-  const whatsappNumber = '553237282050'
+  const whatsappNumber = '5532998114901'
   const whatsappUrl = `https://wa.me/${whatsappNumber}`
 
   return (

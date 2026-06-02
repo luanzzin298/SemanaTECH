@@ -4,6 +4,7 @@ import {
   FaRecycle, FaChartLine, FaAward, FaTree 
 } from 'react-icons/fa'
 import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 
 // Animações padronizadas
 const fadeUp = {
@@ -67,13 +68,31 @@ const CountUp = ({ end, duration = 2000, suffix = '' }) => {
   }, [end, duration, hasAnimated])
 
   return (
-    <span ref={countRef} className="text-4xl md:text-5xl font-bold text-cyan-500">
+    <span ref={countRef} className="text-3xl md:text-4xl font-bold text-cyan-500">
       {count}{suffix}
     </span>
   )
 }
 
 const Sustainability = () => {
+  const sectionRef = useRef(null)
+
+  // Scroll automático para o topo da seção quando a página carregar
+  useEffect(() => {
+    setTimeout(() => {
+      if (sectionRef.current) {
+        const offset = 70 // Compensação reduzida para o header fixo
+        const elementPosition = sectionRef.current.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - offset
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      }
+    }, 100)
+  }, [])
+
   const sustainabilityMetrics = [
     { icon: FaRecycle, value: 50, suffix: 't/mês', label: 'Plástico reciclado', color: 'cyan' },
     { icon: FaSolarPanel, value: 40, suffix: '%', label: 'Energia renovável', color: 'cyan' },
@@ -113,34 +132,37 @@ const Sustainability = () => {
   ]
 
   return (
-    <section id="sustainability" className="py-24 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+    <section 
+      ref={sectionRef}
+      id="sustainability" 
+      className="pt-24 pb-20 bg-gradient-to-b from-white to-gray-50 overflow-hidden"
+    >
       <div className="container mx-auto px-6">
         
         {/* Cabeçalho */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          animate="show"
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-12"
         >
           <motion.span
             initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
+            animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
             className="inline-block bg-cyan-100 text-cyan-700 text-sm font-semibold
-                       px-4 py-1 rounded-full mb-4"
+                       px-4 py-1 rounded-full mb-3"
           >
             Sustentabilidade
           </motion.span>
 
-          <h2 className="text-3xl md:text-4xl font-bold text-[#001C30] mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#001C30] mb-3">
             Compromisso com o{' '}
             <span className="text-cyan-500">Planeta</span>
           </h2>
-          <div className="w-20 h-1 bg-cyan-400 mx-auto mb-6 rounded-full" />
-          <p className="text-gray-600 text-lg">
+          <div className="w-20 h-1 bg-cyan-400 mx-auto mb-4 rounded-full" />
+          <p className="text-gray-600 text-base">
             A sustentabilidade está integrada ao nosso DNA. Com metas ousadas para 2030, 
             transformamos responsabilidade ambiental em inovação.
           </p>
@@ -150,24 +172,23 @@ const Sustainability = () => {
         <motion.div
           variants={stagger()}
           initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20"
+          animate="show"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-16"
         >
           {sustainabilityMetrics.map((metric, idx) => (
             <motion.div
               key={idx}
               variants={fadeUp}
-              whileHover={{ y: -5 }}
-              className="bg-white rounded-2xl p-6 text-center shadow-md 
+              whileHover={{ y: -4 }}
+              className="bg-white rounded-2xl p-5 text-center shadow-md 
                          hover:shadow-xl transition-all duration-300
                          border border-cyan-100"
             >
-              <div className="bg-cyan-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <metric.icon className="text-3xl text-cyan-600" />
+              <div className="bg-cyan-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3">
+                <metric.icon className="text-2xl text-cyan-600" />
               </div>
               <CountUp end={metric.value} suffix={metric.suffix} />
-              <p className="text-gray-500 text-sm mt-2">{metric.label}</p>
+              <p className="text-gray-500 text-xs mt-2">{metric.label}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -176,33 +197,32 @@ const Sustainability = () => {
         <motion.div
           variants={stagger()}
           initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid md:grid-cols-2 gap-8 mb-20"
+          animate="show"
+          className="grid md:grid-cols-2 gap-6 mb-16"
         >
           {sustainabilityInitiatives.map((initiative, idx) => (
             <motion.div
               key={idx}
               variants={fadeLeft}
-              whileHover={{ y: -5 }}
-              className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl 
+              whileHover={{ y: -4 }}
+              className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl 
                          transition-all duration-300 border border-gray-100 group"
             >
-              <div className="flex gap-5 items-start">
-                <div className="bg-gradient-to-br from-cyan-400 to-cyan-600 w-14 h-14 
+              <div className="flex gap-4 items-start">
+                <div className="bg-gradient-to-br from-cyan-400 to-cyan-600 w-12 h-12 
                                 rounded-xl flex items-center justify-center shadow-lg
                                 group-hover:scale-110 transition-transform duration-300">
-                  <initiative.icon className="text-2xl text-white" />
+                  <initiative.icon className="text-xl text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-[#001C30] mb-2">
+                  <h3 className="text-lg font-bold text-[#001C30] mb-2">
                     {initiative.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed mb-3">
+                  <p className="text-gray-600 leading-relaxed mb-2 text-sm">
                     {initiative.description}
                   </p>
-                  <div className="inline-block bg-cyan-50 text-cyan-700 text-sm 
-                                  font-semibold px-3 py-1 rounded-full">
+                  <div className="inline-block bg-cyan-50 text-cyan-700 text-xs 
+                                  font-semibold px-2 py-1 rounded-full">
                     {initiative.metrics}
                   </div>
                 </div>
@@ -215,51 +235,65 @@ const Sustainability = () => {
         <motion.div
           variants={scaleIn}
           initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="bg-gradient-to-r from-[#001C30] to-[#0A4A6E] rounded-2xl p-8 md:p-12 
+          animate="show"
+          className="bg-gradient-to-r from-[#001C30] to-[#0A4A6E] rounded-2xl p-6 md:p-8 
                      text-center text-white shadow-xl"
         >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex-1 text-left">
-              <FaHandsHelping className="text-5xl text-cyan-300 mb-4" />
-              <h3 className="text-2xl md:text-3xl font-bold mb-2">
+              <FaHandsHelping className="text-4xl text-cyan-300 mb-3" />
+              <h3 className="text-xl md:text-2xl font-bold mb-2">
                 +50 toneladas recicladas por mês
               </h3>
-              <p className="text-cyan-100 mb-4">
+              <p className="text-cyan-100 text-sm mb-3">
                 Comprometidos com o Pacto Global da ONU e com certificação de material reciclado.
               </p>
-              <div className="flex flex-wrap gap-3">
-                <span className="inline-block bg-cyan-500/20 text-cyan-200 px-4 py-2 rounded-full text-sm">
+              <div className="flex flex-wrap gap-2">
+                <span className="inline-block bg-cyan-500/20 text-cyan-200 px-3 py-1 rounded-full text-xs">
                   🌍 Pacto Global
                 </span>
-                <span className="inline-block bg-cyan-500/20 text-cyan-200 px-4 py-2 rounded-full text-sm">
+                <span className="inline-block bg-cyan-500/20 text-cyan-200 px-3 py-1 rounded-full text-xs">
                   ✓ ISO 14001
                 </span>
-                <span className="inline-block bg-cyan-500/20 text-cyan-200 px-4 py-2 rounded-full text-sm">
+                <span className="inline-block bg-cyan-500/20 text-cyan-200 px-3 py-1 rounded-full text-xs">
                   ♻️ Material Reciclado
                 </span>
               </div>
             </div>
             <div className="text-center">
-              <div className="text-6xl font-bold text-cyan-300 mb-2">2027</div>
-              <p className="text-cyan-100 text-sm">Meta de <br />100% circular</p>
-              <div className="w-20 h-1 bg-cyan-400 mx-auto mt-3 rounded-full" />
+              <div className="text-5xl font-bold text-cyan-300 mb-1">2027</div>
+              <p className="text-cyan-100 text-xs">Meta de <br />100% circular</p>
+              <div className="w-16 h-0.5 bg-cyan-400 mx-auto mt-2 rounded-full" />
             </div>
           </div>
         </motion.div>
 
-        {/* Linha do tempo de sustentabilidade */}
+        {/* CTA - Chamada para ação */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="mt-20"
+          animate="show"
+          transition={{ delay: 0.3 }}
+          className="mt-12 text-center"
         >
-          
-            
-       
+          <div className="bg-gradient-to-r from-cyan-50 to-white rounded-2xl p-6 md:p-8 shadow-lg max-w-3xl mx-auto">
+            <h3 className="text-xl md:text-2xl font-bold text-[#001C30] mb-2">
+              Faça parte dessa mudança
+            </h3>
+            <p className="text-gray-600 text-sm mb-5">
+              Conheça nossas soluções sustentáveis e contribua para um futuro mais verde.
+            </p>
+            <Link
+              to="/contato"
+              className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-600 
+                         text-white font-semibold px-6 py-2.5 rounded-full 
+                         transition-all duration-300 shadow-lg hover:shadow-xl 
+                         hover:-translate-y-1 group text-sm"
+            >
+              Fale com um especialista
+              <FaHandsHelping className="group-hover:translate-x-1 transition-transform text-sm" />
+            </Link>
+          </div>
         </motion.div>
 
       </div>

@@ -13,6 +13,24 @@ import { Link } from 'react-router-dom'
 const Hero = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const containerRef = useRef(null)
+  const sectionRef = useRef(null)
+
+  // Scroll automático para o topo da seção quando a página carregar
+  useEffect(() => {
+    // Força o scroll para o topo da seção Hero
+    setTimeout(() => {
+      if (sectionRef.current) {
+        const offset = 80 // Compensação para o header fixo
+        const elementPosition = sectionRef.current.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - offset
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      }
+    }, 100)
+  }, [])
 
   // ============================================
   // 🔧 CONFIGURAÇÕES DAS IMAGENS
@@ -76,7 +94,7 @@ const Hero = () => {
 
   return (
     <section
-      ref={containerRef}
+      ref={sectionRef}
       id="home"
       className="relative min-h-screen flex items-center overflow-hidden"
     >
@@ -124,6 +142,7 @@ const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* TEXTO */}
           <motion.div
+            ref={containerRef}
             style={{ x: parallaxX, y: parallaxY }}
             className="space-y-6"
           >
@@ -248,47 +267,45 @@ const Hero = () => {
             </motion.div>
           </motion.div>
 
-         {/* LOGO */}
-{/* LOGO */}
-{/* LOGO */}
-<motion.div
-  initial={{ opacity: 0, x: 50 }}
-  animate={{ opacity: 1, x: 0 }}
-  transition={{ delay: 0.8, duration: 0.8 }}
-  className="hidden lg:flex justify-center items-center ml-24 xl:ml-60"
->
-  <div className="relative bg-white/10 backdrop-blur-md rounded-3xl p-10 border border-cyan-300/30 shadow-2xl max-w-md w-full overflow-hidden">
-    
-    {/* brilho */}
-    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-300/10 to-transparent pointer-events-none" />
+          {/* LOGO */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            className="hidden lg:flex justify-center items-center ml-24 xl:ml-60"
+          >
+            <div className="relative bg-white/10 backdrop-blur-md rounded-3xl p-10 border border-cyan-300/30 shadow-2xl max-w-md w-full overflow-hidden">
+              
+              {/* brilho */}
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-300/10 to-transparent pointer-events-none" />
 
-    {/* logo */}
-    <div className="flex justify-center relative z-10">
-      <img
-        src={LOGO_IMAGE_URL}
-        alt="Logo H2B"
-        className="w-80 h-auto object-contain hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
-        onError={(e) => {
-          e.target.onerror = null
-          e.target.src =
-            'https://placehold.co/400x200/0A4A6E/cyan?text=H2B'
-        }}
-      />
-    </div>
+              {/* logo */}
+              <div className="flex justify-center relative z-10">
+                <img
+                  src={LOGO_IMAGE_URL}
+                  alt="Logo H2B"
+                  className="w-80 h-auto object-contain hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
+                  onError={(e) => {
+                    e.target.onerror = null
+                    e.target.src =
+                      'https://placehold.co/400x200/0A4A6E/cyan?text=H2B'
+                  }}
+                />
+              </div>
 
-    {/* linha */}
-    <div className="w-20 h-[2px] bg-cyan-300 mx-auto my-6 rounded-full" />
+              {/* linha */}
+              <div className="w-20 h-[2px] bg-cyan-300 mx-auto my-6 rounded-full" />
 
-    {/* texto */}
-    <p className="text-center text-white text-lg font-semibold tracking-wide relative z-10">
-      {IMAGE_CAPTION}
-    </p>
+              {/* texto */}
+              <p className="text-center text-white text-lg font-semibold tracking-wide relative z-10">
+                {IMAGE_CAPTION}
+              </p>
 
-    {/* efeitos */}
-    <div className="absolute -top-10 -right-10 w-32 h-32 bg-cyan-300/20 rounded-full blur-3xl" />
-    <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-cyan-500/20 rounded-full blur-3xl" />
-  </div>
-</motion.div>
+              {/* efeitos */}
+              <div className="absolute -top-10 -right-10 w-32 h-32 bg-cyan-300/20 rounded-full blur-3xl" />
+              <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-cyan-500/20 rounded-full blur-3xl" />
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
